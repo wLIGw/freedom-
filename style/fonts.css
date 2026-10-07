@@ -1,0 +1,43 @@
+@font-face {
+    font-family: 'Myriad Pro';
+    src: url("../fonts/miriad/subset-MyriadPro-Regular.woff2") format("woff2"), url("../fonts/miriad/subset-MyriadPro-Regular.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Bodoni';
+    src: url("../fonts/Bodoni/subset-Bodoni72C-Italic.woff2") format("woff2"), url("../fonts/Bodoni/subset-Bodoni72C-Italic.woff") format("woff");
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Bodoni';
+    src: url("../fonts/Bodoni/subset-Bodoni72C-BoldItalic.woff2") format("woff2"), url("../fonts/Bodoni/subset-Bodoni72C-BoldItalic.woff") format("woff");
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Bodoni';
+    src: url("../fonts/Bodoni/subset-Bodoni72C.woff2") format("woff2"), url("../fonts/Bodoni/subset-Bodoni72C.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Bodoni';
+    src: url("../fonts/Bodoni/subset-Bodoni72C-Bold.woff2") format("woff2"), url("../fonts/Bodoni/subset-Bodoni72C-Bold.woff") format("woff");
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Baskerville';
+    src: url("../fonts/Baskerville/subset-BaskervilleLight.woff2") format("woff2"), url("../fonts/Baskerville/subset-BaskervilleLight.woff") format("woff");
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
