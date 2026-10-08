@@ -860,16 +860,15 @@ body.menu-open .side-menu {
   max-width: 1300px;
   margin: 0 auto;
   display: flex;
-  align-items: stretch;
+  align-items: center; /* Выравнивание всего контента ровно по центру высоты */
   justify-content: space-between;
 }
 
 .footer-col {
   flex: 1;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  text-align: center;
 }
 
 .footer-title {
@@ -888,6 +887,7 @@ body.menu-open .side-menu {
   flex-direction: column;
   gap: 12px;
   align-items: center;
+  text-align: center;
 }
 
 .footer-content a {
@@ -904,22 +904,25 @@ body.menu-open .side-menu {
 
 .footer-divider {
   width: 1px;
+  height: 60px; /* Фиксированная высота разделителя в ряду */
   background-color: #000000;
-  align-self: stroke;
   margin: 0 20px;
 }
 
+/* Соцсети в качестве 3-й колонки */
 .footer-socials {
   display: flex;
+  flex-direction: row; /* В один ряд */
   justify-content: center;
   align-items: center;
   gap: 28px;
-  margin-top: 50px; /* Отступ от верхних колонок */
+  margin-top: 0; /* Сбросили верхний отступ, так как соцсети теперь в одном ряду */
 }
 
 .footer-socials a {
-  font-size: 32px; /* Размер ваших иконок */
+  font-size: 32px; /* Ваш размер иконок */
   color: #000000;
+  display: inline-flex;
   transition: opacity 0.3s ease;
 }
 
@@ -1211,7 +1214,6 @@ body.menu-open .side-menu {
 
   /* Отступ для соцсетей снизу */
   .footer-socials {
-    margin-top: 35px;
     gap: 24px;
   }
 
