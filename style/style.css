@@ -1,862 +1,1261 @@
 html {
-    font-family: 'Bodoni', sans-serif;
+  font-family: "Bodoni", sans-serif;
 }
 
-.none{
-    display: none !important;
+.none {
+  display: none !important;
 }
 
 .container {
-    max-width: 1100px;
-    width: 100%;
-    padding: 0 20px;
-    margin: 0 auto;
+  max-width: 1100px;
+  width: 100%;
+  padding: 0 20px;
+  margin: 0 auto;
 }
 
-.container-big{
-    max-width: 1300px;
-    width: 100%;
-    padding: 0 20px;
-    margin: 0 auto;
+.container-big {
+  max-width: 1300px;
+  width: 100%;
+  padding: 0 20px;
+  margin: 0 auto;
 }
 
-.header{
-    margin-bottom: 120px;
+/* ===== Шапка ===== */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  color: #fff;
+  background: transparent;
+  transition:
+    transform 0.35s ease,
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+.site-header.is-hidden {
+  transform: translateY(-100%);
+}
+
+.site-header.is-solid {
+  /* после первой секции */
+  background: #fff;
+  color: #231f20;
+}
+
+.site-header__inner {
+  position: relative; /* Точка отсчета для абсолютного центра логотипа */
+  display: flex;
+  justify-content: space-between; /* Бургер влево, языки вправо */
+  align-items: center; /* Выравнивание по центральной оси */
+  padding: 20px clamp(15px, 2.5vw, 45px); /* Одинаковые отступы сверху и снизу */
+  min-height: 140px;
+}
+
+.burger {
+  justify-self: start;
+  width: 30px;
+  height: 22px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.burger span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: currentColor;
+}
+
+.site-logo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2; /* Гарантирует, что логотип будет над фоном */
+  display: block;
+  line-height: 0;
+}
+
+.site-logo img {
+  display: block;
+  width: 200px; /* подставь реальную ширину своего файла, лучше чётное число */
+  height: auto;
+  max-width: none;
+}
+
+/* показываем только один логотип, без наложения и прозрачности */
+.site-logo .logo-black {
+  display: none;
+}
+
+.site-header.is-solid .logo-white {
+  display: none;
+}
+.site-header.is-solid .logo-black {
+  display: block;
+}
+
+.site-lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-family: "Bodoni", serif;
+  font-size: 24px;
+  line-height: 1;
+  font-weight: normal;
+  letter-spacing: 1px;
+  white-space: nowrap;
+
+  /* Оптическая коррекция: опускаем текст вниз, компенсируя метрики шрифта Bodoni */
+  transform: translateY(3px);
+}
+
+.site-lang a {
+  position: relative;
+  display: inline-block;
+  color: inherit;
+  text-decoration: none;
+  padding: 0; /* УБРАНО: padding-bottom больше не раздувает высоту блока */
+  line-height: 1;
+}
+
+.site-lang a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px; /* Линия рисуется НИЖЕ текста, не меняя его размер */
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.3s ease;
+}
+
+.site-lang a:hover::after {
+  transform: scaleX(1);
+}
+
+/* ===== Боковое меню ===== */
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
+  z-index: 1900;
+}
+
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 420px;
+  max-width: 90vw;
+  height: 100vh;
+  height: 100dvh;
+  background: #fff;
+  color: #231f20;
+  padding: 40px 30px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  transform: translateX(-100%);
+  visibility: hidden;
+  transition:
+    transform 0.4s ease,
+    visibility 0.4s ease;
+  z-index: 2000;
+}
+
+body.menu-open {
+  overflow: hidden;
+}
+body.menu-open .menu-overlay {
+  opacity: 1;
+  visibility: visible;
+}
+body.menu-open .side-menu {
+  transform: translateX(0);
+  visibility: visible;
+}
+
+.side-menu__close {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.side-menu__close::before,
+.side-menu__close::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 26px;
+  height: 1px; /* толщина линии */
+  background: #000000;
+}
+
+.side-menu__close::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.side-menu__close::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.side-menu__tabs {
+  display: flex;
+  gap: 25px;
+  margin-bottom: 40px;
+  padding-top: 10px;
+}
+
+.side-menu__tabs button {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: "Bodoni", serif;
+  font-size: 24px;
+  color: #231f20;
+  letter-spacing: 1px;
+}
+
+.side-menu__tabs button.active {
+  color: #d7d399;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.side-menu__list {
+  display: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.side-menu__list.active {
+  display: block;
+}
+
+.side-menu__list li {
+  margin-bottom: 22px;
+}
+
+.side-menu__list a {
+  position: relative; /* линия привязывается к ссылке */
+  display: inline-block; /* линия по ширине текста, а не на всю строку */
+  color: #231f20;
+  text-decoration: none;
+  font-family: "Bodoni", serif;
+  font-size: 28px;
+  letter-spacing: 1px;
+  padding-bottom: 4px;
+}
+
+.side-menu__list a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: #231f20;
+  transform: scaleX(0);
+  transform-origin: center; /* растёт из центра */
+  transition: transform 0.3s ease;
+}
+
+.side-menu__list a:hover::after {
+  transform: scaleX(1);
+}
+
+.header {
+  margin-bottom: 120px;
 }
 
 .header_main {
-    
-    width: 100%;
-    height: 100vh;
-    height: 100dvh; 
-    
-    
-    background: url(../img/Alexey_Gabilo_Freedom_aquamarine_brooch_.jpg) no-repeat center center;
-    background-size: cover; 
-    
-    
-    display: flex;
-    flex-direction: column;
-    justify-content: center; 
-    align-items: center;     
-    text-align: center;
-    padding: 20px;
-    box-sizing: border-box;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+
+  background: url(../img/Alexey_Gabilo_Freedom_aquamarine_brooch_.jpg) no-repeat
+    center center;
+  background-size: cover;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .header_title {
-    font-family: 'Baskerville Light';
-    font-weight: 400;
-    color: #fff;
-    text-transform: uppercase;
-
-    /* clamp(МИНИМУМ, ПРЕДПОЧТИТЕЛЬНЫЙ РАЗМЕР В VW, МАКСИМУМ) */
-    font-size: clamp(40px, 6vw, 80px);
-    letter-spacing: clamp(10px, 4vw, 60px);
-    text-indent: clamp(10px, 4vw, 60px);
-
-    transform: translateY(-24px);
+  font-family: "Baskerville Light";
+  font-weight: 400;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: clamp(40px, 6vw, 80px);
+  text-align: center;                  /* Гарантирует центрирование текста */
+  
+  letter-spacing: clamp(10px, 4vw, 60px);
+  margin-right: calc(-1 * clamp(10px, 4vw, 60px)); /* Компенсирует лишний отступ справа */
+  
+  text-indent: 0;                     /* Убираем text-indent, он больше не нужен */
+  transform: translateY(-24px);
 }
-
 .header_subtitle {
-    color: #fff;
-    text-transform: uppercase;
-    font-family: 'Myriad Pro';
+  color: #fff;
+  text-transform: uppercase;
+  font-family: "Myriad Pro";
+  font-size: clamp(16px, 1.8vw, 20px);
+  text-align: center;
 
-    /* Подзаголовок тоже плавно уменьшается */
-    font-size: clamp(16px, 1.8vw, 20px);
-    letter-spacing: clamp(2px, 0.5vw, 6px);
-    text-indent: clamp(2px, 0.5vw, 6px);
-
-    transform: translateY(-26px);
+  letter-spacing: clamp(2px, 0.5vw, 6px);
+  margin-right: calc(-1 * clamp(2px, 0.5vw, 6px)); /* Компенсация трекинга справа */
+  
+  text-indent: 0;                                  /* Сбрасываем, чтобы не смещать текст */
+  transform: translateY(-26px);
 }
 
 .section__1-title {
-    font-size: 45px;
-    position: relative;
-    line-height: 1.2;
-    font-style: italic;
-    text-align: center;
-    padding: 40px 0;
-    font-weight: normal;
-    margin-bottom: 50px;
+  font-size: 45px;
+  position: relative;
+  line-height: 1.2;
+  font-style: italic;
+  text-align: center;
+  padding: 40px 0;
+  font-weight: normal;
+  margin-bottom: 50px;
 }
 
 .section__1-title::before,
 .section__1-title::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 270px;
-    height: 1px;
-    background-color: #231F20;
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 270px;
+  height: 1px;
+  background-color: #231f20;
 }
 
 .section__1-title::before {
-    top: 0;
+  top: 0;
 }
 
 .section__1-title::after {
-    bottom: 0;
+  bottom: 0;
 }
 
-.section__2{
-    margin-bottom: 120px;
+.section__2 {
+  margin-bottom: 120px;
 }
 
 .section__2-desc {
-    font-family: 'Bodoni', 'Bodoni MT', 'Bodoni 72', 'Playfair Display', serif;
-    font-size: 24px;
-    line-height: 1.38;
-    font-weight: normal;
-    font-style: italic;
-    color: #231F20;
-    padding-top: 40px;          /* место над большой буквой */
-    padding-bottom: 60px;     
+  font-family: "Bodoni", "Bodoni MT", "Bodoni 72", "Playfair Display", serif;
+  font-size: 24px;
+  line-height: 1.38;
+  font-weight: normal;
+  font-style: italic;
+  color: #231f20;
+  padding-top: 40px; /* место над большой буквой */
+  padding-bottom: 60px;
 }
 
 .section__2-desc::first-letter {
-    font-style: italic;
-    font-size: 100px;
-    line-height: 0;             /* буква не увеличивает высоту первой строки */
-    margin-right: 4px;
-    float: none;
+  font-style: italic;
+  font-size: 100px;
+  line-height: 0; /* буква не увеличивает высоту первой строки */
+  margin-right: 4px;
+  float: none;
 }
 
 .section__2-img {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 30px;
-    margin-top: 60px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+  margin-top: 60px;
 }
 
 .section__2-img img {
-    /* 
+  /* 
       Код ниже автоматически рассчитывает ширину так, чтобы на ПК они были по 495px 
       (при условии, что ширина контейнера около 1020px и более), 
       а при уменьшении экрана до 768px и ниже они начинают плавно сжиматься вдвоем в ряд.
     */
-    width: calc(50% - 15px);
-    max-width: 495px;
-    height: auto; /* Чтобы пропорции квадрата сохранялись при резиновой ширине */
-    aspect-ratio: 1 / 1; /* Жестко держит квадратную форму 1:1 в современных браузерах */
-    object-fit: cover;
-    flex-shrink: 1; /* Разрешаем сжатие */
+  width: calc(50% - 15px);
+  max-width: 495px;
+  height: auto; /* Чтобы пропорции квадрата сохранялись при резиновой ширине */
+  aspect-ratio: 1 / 1; /* Жестко держит квадратную форму 1:1 в современных браузерах */
+  object-fit: cover;
+  flex-shrink: 1; /* Разрешаем сжатие */
 }
 
 /* Если картинок всего 3, то 3-я картинка встает строго по центру */
 .section__2-img img:nth-child(3):last-child {
-    margin-left: auto;
-    margin-right: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .section__3 {
-    position: relative;
-    display: block;
-    width: 100%;
-    overflow: hidden;
-    margin-bottom: 100px;
+  position: relative;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: 100px;
 }
 
 .section__3 img {
-    display: block;
-    width: 62%;
-    max-width: none;
-    height: auto;
+  display: block;
+  width: 62%;
+  max-width: none;
+  height: auto;
 }
 
 .section__3 .container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 100%;
-    box-sizing: border-box;   /* чтобы padding не раздувал ширину */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  box-sizing: border-box; /* чтобы padding не раздувал ширину */
 }
 
 .section__3-desc {
-    position: absolute;
-    top: 28%;
-    right: 20px;              /* равно padding контейнера */
-    transform: translateY(-50%);
-    width: 480px;             /* фиксированная ширина вместо % */
-    max-width: calc(100% - 40px);
-    margin: 0;
-    font-family: 'Bodoni';
-    font-size: 30px;
-    font-style: italic;
-    line-height: 1.38;
-    text-align: right;
-    color: #231F20;
+  position: absolute;
+  top: 28%;
+  right: 20px; /* равно padding контейнера */
+  transform: translateY(-50%);
+  width: 480px; /* фиксированная ширина вместо % */
+  max-width: calc(100% - 40px);
+  margin: 0;
+  font-family: "Bodoni";
+  font-size: 30px;
+  font-style: italic;
+  line-height: 1.38;
+  text-align: right;
+  color: #231f20;
 }
 
 .section__4 {
-    overflow-x: hidden;           /* чтобы не было горизонтального скролла */
-    margin-bottom: 120px;
+  overflow-x: hidden; /* чтобы не было горизонтального скролла */
+  margin-bottom: 120px;
 }
 
 /* вернуть контейнер как был (1100px по центру) */
 .section__4 .container {
-    max-width: 1100px;
-    padding: 0 20px;
-    margin: 0 auto;
+  max-width: 1100px;
+  padding: 0 20px;
+  margin: 0 auto;
 }
 
 .section__4-wrapper {
-    --text-w: 495px;        /* ширина текстового блока */
-    --img-left: 565px;      /* где начинается картинка (150 + 400 + 60, как сейчас) */
-    --gap: 65px;
+  --text-w: 495px; /* ширина текстового блока */
+  --img-left: 565px; /* где начинается картинка (150 + 400 + 60, как сейчас) */
+  --gap: 65px;
 
-    display: flex;
-    align-items: stretch;
-    gap: var(--gap);
-    width: max-content;
-    margin-left: calc(var(--img-left) - var(--text-w) - var(--gap));
-    padding: 0;
+  display: flex;
+  align-items: stretch;
+  gap: var(--gap);
+  width: max-content;
+  margin-left: calc(var(--img-left) - var(--text-w) - var(--gap));
+  padding: 0;
 }
 
-
 .section__4-img {
-    flex: 1 1 auto;             /* Разрешаем блоку гибко сжиматься */
-    max-width: 675px;           /* Максимальная ширина на десктопе */
+  flex: 1 1 auto; /* Разрешаем блоку гибко сжиматься */
+  max-width: 675px; /* Максимальная ширина на десктопе */
 }
 
 .section__4-img img {
-    display: block;
-    width: 100% !important;     /* Вместо 675px делаем резиновой */
-    height: auto;               /* Сохраняем пропорции при уменьшении */
-    max-height: 900px;
-    object-fit: cover;
+  display: block;
+  width: 100% !important; /* Вместо 675px делаем резиновой */
+  height: auto; /* Сохраняем пропорции при уменьшении */
+  max-height: 900px;
+  object-fit: cover;
 }
 
 .section__4-text {
-    flex: none;
-    width: var(--text-w);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding-bottom: 60px;
+  flex: none;
+  width: var(--text-w);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: 60px;
 }
 .section__4-title {
-    margin: 0 0 20px;
-    letter-spacing: 10px;
-    font-size: 42px;
-    color: #d7d399;
-    font-family: 'Myriad Pro';
+  margin: 0 0 20px;
+  letter-spacing: 10px;
+  font-size: 42px;
+  color: #d7d399;
+  font-family: "Myriad Pro";
 }
 
 .section__4-desc {
-    margin: 0;
-    font-family: 'Bodoni';
-    font-size: 24px;
-    line-height: 1.38;
-    color: #231F20;
+  margin: 0;
+  font-family: "Bodoni";
+  font-size: 24px;
+  line-height: 1.38;
+  color: #231f20;
 }
 
 .section__5 {
-    width: 100%;
-    margin-bottom: 120px;
-    overflow: hidden;
+  width: 100%;
+  margin-bottom: 120px;
+  overflow: hidden;
 }
 
 .section__5 img {
-    display: block;
-    width: 100%;
-    height: auto;          /* высота считается от ширины, пропорции не ломаются */
+  display: block;
+  width: 100%;
+  height: auto; /* высота считается от ширины, пропорции не ломаются */
 }
 
 .section__6-text {
-    width: 100%;
-    max-width: 495px;      /* на большом экране остаётся 495px, как сейчас */
+  width: 100%;
+  max-width: 495px; /* на большом экране остаётся 495px, как сейчас */
 }
 
 .section__6-title {
-    margin: 0 0 20px;
-    letter-spacing: clamp(4px, 1.5vw, 10px);
-    font-size: clamp(24px, 6vw, 42px);
-    color: #d7d399;
-    font-family: 'Myriad Pro';
-    overflow-wrap: anywhere;   /* длинное слово CRAFTMANSHIP не уйдёт за экран */
+  margin: 0 0 20px;
+  letter-spacing: clamp(4px, 1.5vw, 10px);
+  font-size: clamp(24px, 6vw, 42px);
+  color: #d7d399;
+  font-family: "Myriad Pro";
+  overflow-wrap: anywhere; /* длинное слово CRAFTMANSHIP не уйдёт за экран */
 }
 
 .section__6-desc {
-    margin: 0;
-    font-family: 'Bodoni';
-    font-size: clamp(20px, 3vw, 26px);
-    line-height: 1.38;
-    color: #231F20;
+  margin: 0;
+  font-family: "Bodoni";
+  font-size: clamp(20px, 3vw, 26px);
+  line-height: 1.38;
+  color: #231f20;
 }
 
 .section__6 {
-    width: 100%;
+  width: 100%;
 }
 
 .section__6 img {
-    width: 100%;
-    height: auto;
-    object-fit: contain;
-    display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
 }
 
 .section__7-img {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 30px;
-    margin-top: 120px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+  margin-top: 120px;
 }
 
 .section__7-img img {
-    width: calc(50% - 15px);   /* две в ряд, сжимаются вместе с экраном */
-    max-width: 495px;
-    height: auto;
-    aspect-ratio: 1 / 1;       /* квадрат сохраняется */
-    object-fit: cover;
-    flex-shrink: 1;
+  width: calc(50% - 15px); /* две в ряд, сжимаются вместе с экраном */
+  max-width: 495px;
+  height: auto;
+  aspect-ratio: 1 / 1; /* квадрат сохраняется */
+  object-fit: cover;
+  flex-shrink: 1;
 }
 
 /* если картинок 3, третья встаёт по центру (как в секции 2) */
 .section__7-img img:nth-child(3):last-child {
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.section__7-desc{
-    font-family: 'Bodoni';
-    font-size: 24px;
-    line-height: 1.38;
-    font-weight: normal;
-    color: #231F20;
-    margin-top: 120px;
-    margin-bottom: 120px;
-}
-
-.section__8{
-    margin-bottom: 120px;
-}
-
-.section__8-img {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 30px;
-    margin-top: 120px;
-    margin-bottom: 80px;
-}
-
-.section__8-img img {
-    width: calc(50% - 15px);
-    max-width: 495px;
-    height: auto;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    flex-shrink: 1;
-}
-
-.section__8-img img:nth-child(3):last-child {
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.section__8-desc{
-    font-size: 45px;
-    position: relative;
-    line-height: 1.2;
-    font-style: italic;
-    text-align: center;
-    font-weight: normal;
-}
-
-.section__9 {
-    width: 100%;
-}
-
-.section__9 img {
-    width: 100%;
-    height: auto;
-    object-fit: contain;
-    display: block;
-}
-
-.section__10-wrapper {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;   /* minmax(0) даёт левой колонке сжиматься */
-    column-gap: clamp(15px, 3vw, 40px);
-    align-items: start;
-    padding: clamp(60px, 10vw, 120px) 0;
-}
-
-.section__10-item {
-    grid-column: 1;
-    display: flex;
-    align-items: center;
-    gap: clamp(20px, 6vw, 100px);
-    margin-bottom: 60px;
-}
-
-.section__10-stiky {
-    grid-column: 2;
-    grid-row: 1 / span 10;      /* на всю высоту блоков, лишние пустые строки высоты не имеют */
-    align-self: center;         /* по центру относительно всех блоков */
-    position: static;
-}
-
-.section__10-item img {
-    flex: 0 0 38%;                    /* картинка занимает 38% блока и сжимается вместе с ним */
-    width: 38%;
-    max-width: 320px;                 /* на большом экране не больше 320px, как раньше */
-    min-width: 0;
-    height: auto;
-}
-
-.section__10-text {
-    flex: 1 1 0;
-    min-width: 0;
-    max-width: 460px;
-}
-
-.section__10-title {
-    letter-spacing: clamp(3px, 0.8vw, 10px);
-    font-size: clamp(22px, 3.2vw, 42px);
-    color: #d7d399;
-    font-family: 'Myriad Pro';
-    font-weight: normal;
-    text-transform: none;
-    margin-bottom: 15px;
-    overflow-wrap: anywhere;
-}
-
-.section__10-desc {
-    font-family: 'Bodoni';
-    font-size: 24px;
-    line-height: 1.38;
-    font-weight: normal;
-    font-style: italic;
-    color: #231F20;
-    width: 100%;            /* вместо фиксированных 460px */
-    margin: 0;
-}
-
-.section__10-stiky {
-    grid-column: 2;
-    grid-row: 1 / span 10;
-    align-self: stretch;            /* высота = высоте всех блоков */
-    position: relative;
-    width: clamp(60px, 14vw, 200px);
-}
-
-.section__10-stiky img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    max-width: none;
-    object-fit: contain;            /* вся картинка видна, пропорции не ломаются */
-    object-position: center;        /* по центру относительно блоков */
-}
-
-.section__10-title {
-    letter-spacing: 10px;
-    font-size: 42px;
-    color: #d7d399;
-    font-family: 'Myriad Pro';
-    font-weight: normal;
-    text-transform: none;
-    margin-bottom: 15px;
-}
-
-.section__11 {
-    background: #231f20;
-    overflow: hidden;
-}
-
-.section__11-wrapper {
-    position: relative;
-    display: flex;
-    justify-content: flex-end;   /* картинка справа, слева остаётся цвет #231f20 */
-    height: 965px;
-}
-
-.section__11-wrapper img {
-    display: block;
-    width: 70vw !important;
-    max-width: none !important;
-    height: 100% !important;        /* высота = высоте обёртки */
-    object-fit: cover;
-    object-position: top center;    /* верх (лицо) остаётся, обрезается низ */
-}
-
-.section__11-quote {
-    position: absolute;
-    top: 200px;
-    left: 22%;
-    width: 493px;
-    margin: 0;
-    z-index: 2;
-    font-family: 'Bodoni';
-    font-size: 28px;
-    font-style: italic;
-    line-height: 1.38;
-    color: #fff;
-    left: clamp(20px, calc(44vw - 400px), 22%);   /* двигается влево вместе с экраном и упирается в 20px */
-    width: min(493px, calc(100% - 40px));          /* на узком экране не вылезает за край */
-}
-
-.section__12 {
-    overflow: hidden;
-    padding-bottom: 120px;
-}
-
-.section__12-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 70px;
-    padding: 120px 20px 0 20px;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.section__12-wrapper img {
-    display: block;
-    /* Разрешаем картинке занимать до 900px, но сжиматься при необходимости */
-    flex: 1 1 900px;
-    width: 100% !important;
-    max-width: 900px !important;
-    min-width: 0;
-    height: auto !important;
-    filter: drop-shadow(5px 5px 15px #6C6E78);
-}
-
-.section__12-text {
-    /* Фиксируем базовую ширину текста, запрещаем ему сжиматься первым */
-    width: 495px;
-    max-width: 100%;
-}
-
-.section__12-title {
-    margin: 0 0 15px;
-    text-align: center;
-    font-family: 'Myriad Pro';
-    font-size: 42px;
-    font-weight: normal;
-    letter-spacing: 10px;
-    color: #d7d399;
-}
-
-.section__12-desc {
-    margin: 0;
-    font-family: 'Bodoni';
-    font-size: 24px;
-    line-height: 1.38;
-    color: #231F20;
-}
-
-
-.section__13 {
-    width: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-.section__13 img {
-    display: block;
-    width: 100%;
-    max-width: none;
-    height: auto;           /* пропорции сохраняются, обрезки нет */
-}
-
-.section__13-title {
-    margin: 0;
-    padding: 80px 20px;     /* воздух вокруг текста */
-    font-family: 'Bodoni';
-    font-size: 45px;
-    line-height: 1.2;
-    font-style: italic;
-    text-align: center;
-    font-weight: normal;
-    color: #231F20;
-}
-
-@media (max-width: 1460px) {
-    .section__4 .container {
-        max-width: none;
-        padding: 0 20px;
-    }
-
-    .section__4-wrapper {
-        width: 100%;
-        margin-left: 0;
-        gap: 4vw;
-    }
-
-    .section__4-text {
-        flex: 0 1 46%;
-        width: auto;
-        min-width: 0;
-        padding-bottom: 5vw;
-    }
-
-    .section__4-img {
-        flex: 1 1 54%;
-        max-width: none;
-        min-width: 0;
-    }
-
-    .section__4-img img {
-        width: 100% !important;
-        height: auto;
-        max-height: none;
-        aspect-ratio: 3 / 4;
-        object-fit: cover;
-    }
-
-    /* текст уменьшается вместе с экраном */
-    .section__4-title {
-        font-size: clamp(22px, 3.2vw, 42px);
-        letter-spacing: clamp(4px, 0.8vw, 10px);
-        margin-bottom: 1.5vw;
-    }
-
-    .section__4-desc {
-        font-size: clamp(19px, 1.85vw, 24px);
-    }
-}
-
-@media (max-width: 1250px) {
-    .section__3-desc{
-    position: absolute;
-        top: 35%;
-        right: 20px;              /* равно padding контейнера */
-        transform: translateY(-50%);
-        width: 480px;             /* фиксированная ширина вместо % */
-        max-width: calc(100% - 40px);
-        margin: 0;
-        font-family: 'Bodoni';
-        font-size: 30px;
-        font-style: italic;
-        line-height: 1.38;
-        text-align: right;
-        color: #231F20;
-    }
-}
-
-@media (max-width: 1030px) {
-
-    .section__2 {
-    margin-bottom: 30px;
-    }
-
-    .section__2-desc {
-        padding-bottom: 0px;
-    }
-
-    .section__3 {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-        padding: 0 15px; /* Отступы контейнера по бокам */
-        box-sizing: border-box;
-    }
-
-    /* Картинка теперь внутри потока, по центру, ограничена размером */
-    .section__3 img {
-        position: static;
-        width: 100%;
-        height: auto;
-        object-fit: cover;
-        margin-bottom: 30px; /* Отступ до текста */
-        
-    }
-
-    /* Убираем старый .container из HTML или сбрасываем его стили здесь, чтобы не ломал верстку */
-    .section__3 .container {
-        position: static;
-        width: 100%;
-        height: auto;
-        padding: 0;
-        margin: 0;
-    }
-
-    /* Текст встает строго под картинкой по центру */
-    .section__3-desc {
-        position: static;
-        transform: none;
-        width: 100%;
-        max-width: 100%;
-        text-align: center;
-        font-size: 22px; /* Чуть компактнее для мобильных */
-        line-height: 1.38;
-        margin: 0;
-    }
-
-         .section__12-wrapper {
-        flex-direction: column;      /* картинка сверху, текст под ней */
-        align-items: center;
-        gap: 30px;
-        padding: 60px 20px 0;
-    }
-
-    .section__12-wrapper img {
-        flex: none;
-        width: 100% !important;
-        max-width: 600px !important;
-    }
-
-    .section__12-text {
-        flex: none;
-        width: 100%;
-        max-width: 495px;
-    }
-
-    .section__12-title {
-        font-size: 30px;
-    }
-
-    .section__12-desc {
-        font-size: 20px;
-    }
-}
-
-@media (max-width: 950px) {
-    .section__4-wrapper {
-        flex-direction: column;     /* текст сверху, картинка под ним */
-        gap: 40px;
-    }
-
-    .section__4-text,
-    .section__4-img {
-        flex: none;
-        width: 100%;
-    }
-
-    .section__4-text {
-        padding-bottom: 0;
-        justify-content: flex-start;
-    }
-
-    .section__4-title {
-        font-size: clamp(28px, 5vw, 42px);
-        letter-spacing: clamp(5px, 1.2vw, 10px);
-        margin-bottom: 20px;
-    }
-
-    .section__4-desc {
-        font-size: clamp(20px, 3vw, 26px);
-    }
-
-    .section__4-img img {
-        width: 100% !important;
-        height: auto;
-        aspect-ratio: 3 / 4;
-        object-fit: cover;
-    }
-    .header_main {
-        height: 100vh;
-        height: 100dvh;
-        background-image: url(../img/Alexey_Gabilo_Freedom_aquamarine_brooch_mobile.jpg);
-        background-size: cover;
-        background-position: center;
-    }
-}
-
-
-
-@media (max-width: 768px) {
-    .section__1-title {
-        font-size: 30px;
-    }
-
-    .section__2-img {
-        flex-direction: column; /* Переносим в вертикальный ряд */
-        align-items: center;    /* Выравниваем картинки по центру */
-    }
-
-    .section__2-img img {
-        width: 100%;            /* Растягиваем на всю ширину экрана или родителя */
-        max-width: 495px;       /* Ограничиваем максимальный размер */
-    }
-
-    .section__7-img {
-    flex-direction: column;
-    align-items: center;
-    margin-top: 60px;
-}
-
-.section__7-img img {
-    width: 100%;
-    max-width: 495px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .section__7-desc {
-    margin-top: 60px;
-    margin-bottom: 60px;
+  font-family: "Bodoni";
+  font-size: 24px;
+  line-height: 1.38;
+  font-weight: normal;
+  color: #231f20;
+  margin-top: 120px;
+  margin-bottom: 120px;
+}
+
+.section__8 {
+  margin-bottom: 120px;
 }
 
 .section__8-img {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+  margin-top: 120px;
+  margin-bottom: 80px;
+}
+
+.section__8-img img {
+  width: calc(50% - 15px);
+  max-width: 495px;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  flex-shrink: 1;
+}
+
+.section__8-img img:nth-child(3):last-child {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.section__8-desc {
+  font-size: 45px;
+  position: relative;
+  line-height: 1.2;
+  font-style: italic;
+  text-align: center;
+  font-weight: normal;
+}
+
+.section__9 {
+  width: 100%;
+}
+
+.section__9 img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.section__10-wrapper {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto; /* minmax(0) даёт левой колонке сжиматься */
+  column-gap: clamp(15px, 3vw, 40px);
+  align-items: start;
+  padding: clamp(60px, 10vw, 120px) 0;
+}
+
+.section__10-item {
+  grid-column: 1;
+  display: flex;
+  align-items: center;
+  gap: clamp(20px, 6vw, 100px);
+  margin-bottom: 60px;
+}
+
+.section__10-stiky {
+  grid-column: 2;
+  grid-row: 1 / span 10; /* на всю высоту блоков, лишние пустые строки высоты не имеют */
+  align-self: center; /* по центру относительно всех блоков */
+  position: static;
+}
+
+.section__10-item img {
+  flex: 0 0 38%; /* картинка занимает 38% блока и сжимается вместе с ним */
+  width: 38%;
+  max-width: 320px; /* на большом экране не больше 320px, как раньше */
+  min-width: 0;
+  height: auto;
+}
+
+.section__10-text {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 460px;
+}
+
+.section__10-title {
+  letter-spacing: clamp(3px, 0.8vw, 10px);
+  font-size: clamp(22px, 3.2vw, 42px);
+  color: #d7d399;
+  font-family: "Myriad Pro";
+  font-weight: normal;
+  text-transform: none;
+  margin-bottom: 15px;
+  overflow-wrap: anywhere;
+}
+
+.section__10-desc {
+  font-family: "Bodoni";
+  font-size: 24px;
+  line-height: 1.38;
+  font-weight: normal;
+  font-style: italic;
+  color: #231f20;
+  width: 100%; /* вместо фиксированных 460px */
+  margin: 0;
+}
+
+.section__10-stiky {
+  grid-column: 2;
+  grid-row: 1 / span 10;
+  align-self: stretch; /* высота = высоте всех блоков */
+  position: relative;
+  width: clamp(60px, 14vw, 200px);
+}
+
+.section__10-stiky img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: contain; /* вся картинка видна, пропорции не ломаются */
+  object-position: center; /* по центру относительно блоков */
+}
+
+.section__10-title {
+  letter-spacing: 10px;
+  font-size: 42px;
+  color: #d7d399;
+  font-family: "Myriad Pro";
+  font-weight: normal;
+  text-transform: none;
+  margin-bottom: 15px;
+}
+
+.section__11 {
+  background: #231f20;
+  overflow: hidden;
+}
+
+.section__11-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: flex-end; /* картинка справа, слева остаётся цвет #231f20 */
+  height: 965px;
+}
+
+.section__11-wrapper img {
+  display: block;
+  width: 70vw !important;
+  max-width: none !important;
+  height: 100% !important; /* высота = высоте обёртки */
+  object-fit: cover;
+  object-position: top center; /* верх (лицо) остаётся, обрезается низ */
+}
+
+.section__11-quote {
+  position: absolute;
+  top: 200px;
+  left: 22%;
+  width: 493px;
+  margin: 0;
+  z-index: 2;
+  font-family: "Bodoni";
+  font-size: 28px;
+  font-style: italic;
+  line-height: 1.38;
+  color: #fff;
+  left: clamp(
+    20px,
+    calc(44vw - 400px),
+    22%
+  ); /* двигается влево вместе с экраном и упирается в 20px */
+  width: min(
+    493px,
+    calc(100% - 40px)
+  ); /* на узком экране не вылезает за край */
+}
+
+.section__12 {
+  overflow: hidden;
+  padding-bottom: 120px;
+}
+
+.section__12-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 70px;
+  padding: 120px 20px 0 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.section__12-wrapper img {
+  display: block;
+  /* Разрешаем картинке занимать до 900px, но сжиматься при необходимости */
+  flex: 1 1 900px;
+  width: 100% !important;
+  max-width: 900px !important;
+  min-width: 0;
+  height: auto !important;
+  filter: drop-shadow(5px 5px 15px #6c6e78);
+}
+
+.section__12-text {
+  /* Фиксируем базовую ширину текста, запрещаем ему сжиматься первым */
+  width: 495px;
+  max-width: 100%;
+}
+
+.section__12-title {
+  margin: 0 0 15px;
+  text-align: center;
+  font-family: "Myriad Pro";
+  font-size: 42px;
+  font-weight: normal;
+  letter-spacing: 10px;
+  color: #d7d399;
+}
+
+.section__12-desc {
+  margin: 0;
+  font-family: "Bodoni";
+  font-size: 24px;
+  line-height: 1.38;
+  color: #231f20;
+}
+
+.section__13 {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.section__13 img {
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: auto; /* пропорции сохраняются, обрезки нет */
+}
+
+.section__13-title {
+  margin: 0;
+  padding: 80px 20px; /* воздух вокруг текста */
+  font-family: "Bodoni";
+  font-size: 45px;
+  line-height: 1.2;
+  font-style: italic;
+  text-align: center;
+  font-weight: normal;
+  color: #231f20;
+}
+
+.footer {
+  width: 100%;
+  background-color: #ffffff;
+  padding: 80px 20px;
+}
+
+.footer-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+}
+
+.footer-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.footer-title {
+  font-family: 'Bodoni', 'Baskerville', serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: #cbb982;
+  text-transform: lowercase;
+  letter-spacing: 8px;
+  margin: 0 0 30px 0;
+  line-height: 1;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+.footer-content a {
+  font-family: 'Baskerville', 'Bodoni', serif;
+  font-size: 22px;
+  color: #111111;
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+}
+
+.footer-content a:hover {
+  opacity: 0.6;
+}
+
+.footer-divider {
+  width: 1px;
+  background-color: #000000;
+  align-self: stroke;
+  margin: 0 20px;
+}
+
+.footer-socials {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 28px;
+  margin-top: 50px; /* Отступ от верхних колонок */
+}
+
+.footer-socials a {
+  font-size: 32px; /* Размер ваших иконок */
+  color: #000000;
+  transition: opacity 0.3s ease;
+}
+
+.footer-socials a:hover {
+  opacity: 0.6;
+}
+
+@media (max-width: 1460px) {
+  .section__4 .container {
+    max-width: none;
+    padding: 0 20px;
+  }
+
+  .section__4-wrapper {
+    width: 100%;
+    margin-left: 0;
+    gap: 4vw;
+  }
+
+  .section__4-text {
+    flex: 0 1 46%;
+    width: auto;
+    min-width: 0;
+    padding-bottom: 5vw;
+  }
+
+  .section__4-img {
+    flex: 1 1 54%;
+    max-width: none;
+    min-width: 0;
+  }
+
+  .section__4-img img {
+    width: 100% !important;
+    height: auto;
+    max-height: none;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+  }
+
+  /* текст уменьшается вместе с экраном */
+  .section__4-title {
+    font-size: clamp(22px, 3.2vw, 42px);
+    letter-spacing: clamp(4px, 0.8vw, 10px);
+    margin-bottom: 1.5vw;
+  }
+
+  .section__4-desc {
+    font-size: clamp(19px, 1.85vw, 24px);
+  }
+}
+
+@media (max-width: 1250px) {
+  .section__3-desc {
+    position: absolute;
+    top: 35%;
+    right: 20px; /* равно padding контейнера */
+    transform: translateY(-50%);
+    width: 480px; /* фиксированная ширина вместо % */
+    max-width: calc(100% - 40px);
+    margin: 0;
+    font-family: "Bodoni";
+    font-size: 30px;
+    font-style: italic;
+    line-height: 1.38;
+    text-align: right;
+    color: #231f20;
+  }
+}
+
+@media (max-width: 1030px) {
+  .section__2 {
+    margin-bottom: 30px;
+  }
+
+  .section__2-desc {
+    padding-bottom: 0px;
+  }
+
+  .section__3 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 0 15px; /* Отступы контейнера по бокам */
+    box-sizing: border-box;
+  }
+
+  /* Картинка теперь внутри потока, по центру, ограничена размером */
+  .section__3 img {
+    position: static;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    margin-bottom: 30px; /* Отступ до текста */
+  }
+
+  /* Убираем старый .container из HTML или сбрасываем его стили здесь, чтобы не ломал верстку */
+  .section__3 .container {
+    position: static;
+    width: 100%;
+    height: auto;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* Текст встает строго под картинкой по центру */
+  .section__3-desc {
+    position: static;
+    transform: none;
+    width: 100%;
+    max-width: 100%;
+    text-align: center;
+    font-size: 22px; /* Чуть компактнее для мобильных */
+    line-height: 1.38;
+    margin: 0;
+  }
+
+  .section__12-wrapper {
+    flex-direction: column; /* картинка сверху, текст под ней */
+    align-items: center;
+    gap: 30px;
+    padding: 60px 20px 0;
+  }
+
+  .section__12-wrapper img {
+    flex: none;
+    width: 100% !important;
+    max-width: 600px !important;
+  }
+
+  .section__12-text {
+    flex: none;
+    width: 100%;
+    max-width: 495px;
+  }
+
+  .section__12-title {
+    font-size: 30px;
+  }
+
+  .section__12-desc {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 950px) {
+  .section__4-wrapper {
+    flex-direction: column; /* текст сверху, картинка под ним */
+    gap: 40px;
+  }
+
+  .section__4-text,
+  .section__4-img {
+    flex: none;
+    width: 100%;
+  }
+
+  .section__4-text {
+    padding-bottom: 0;
+    justify-content: flex-start;
+  }
+
+  .section__4-title {
+    font-size: clamp(28px, 5vw, 42px);
+    letter-spacing: clamp(5px, 1.2vw, 10px);
+    margin-bottom: 20px;
+  }
+
+  .section__4-desc {
+    font-size: clamp(20px, 3vw, 26px);
+  }
+
+  .section__4-img img {
+    width: 100% !important;
+    height: auto;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+  }
+  .header_main {
+    height: 100vh;
+    height: 100dvh;
+    background-image: url(../img/Alexey_Gabilo_Freedom_aquamarine_brooch_mobile.jpg);
+    background-size: cover;
+    background-position: center;
+  }
+}
+
+@media (max-width: 850px) {
+  .site-logo img {
+    display: block;
+    width: 150px;
+    height: auto;
+    max-width: none;
+  }
+
+  .site-header__inner {
+    min-height: 120px;
+  }
+}
+@media (max-width: 768px) {
+  .section__1-title {
+    font-size: 30px;
+  }
+
+  .section__2-img {
+    flex-direction: column; /* Переносим в вертикальный ряд */
+    align-items: center; /* Выравниваем картинки по центру */
+  }
+
+  .section__2-img img {
+    width: 100%; /* Растягиваем на всю ширину экрана или родителя */
+    max-width: 495px; /* Ограничиваем максимальный размер */
+  }
+
+  .section__7-img {
+    flex-direction: column;
+    align-items: center;
+    margin-top: 60px;
+  }
+
+  .section__7-img img {
+    width: 100%;
+    max-width: 495px;
+  }
+
+  .section__7-desc {
+    margin-top: 60px;
+    margin-bottom: 60px;
+  }
+
+  .section__8-img {
     flex-direction: column;
     align-items: center;
     margin-top: 60px;
     margin-bottom: 60px;
-}
+  }
 
-.section__8-img img {
+  .section__8-img img {
     width: 100%;
     max-width: 495px;
-}
+  }
 
-.section__8-desc {
+  .section__8-desc {
     font-size: 30px;
-}
+  }
 
   .section__10-stiky {
-        display: none;                 /* правая картинка убирается */
-    }
+    display: none; /* правая картинка убирается */
+  }
 
-    .section__10-wrapper {
-        grid-template-columns: minmax(0, 1fr);
-        justify-items: center;         /* блоки по центру */
-    }
+  .section__10-wrapper {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center; /* блоки по центру */
+  }
 
-    .section__10-item {
-        grid-column: 1;
-        justify-content: center;
-        width: 100%;
-        max-width: 560px;
-    }
+  .section__10-item {
+    grid-column: 1;
+    justify-content: center;
+    width: 100%;
+    max-width: 560px;
+  }
 
-     .section__11 {
-        background: none;               /* тёмный фон убран */
-    }
+  .section__11 {
+    background: none; /* тёмный фон убран */
+  }
 
-    .section__11-wrapper img {
-        width: 100% !important;         /* картинка на всю ширину, чтобы не было пустой полосы слева */
-    }
+  .section__11-wrapper img {
+    width: 100% !important; /* картинка на всю ширину, чтобы не было пустой полосы слева */
+  }
 
+  .section__13-title{
+    font-size: 30px;
+  }
 
+  /* Контейнер переключаем в колонку */
+  .footer-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+  }
 
+  /* Разделитель между колонками делаем горизонтальным */
+  .footer-divider {
+    width: 60px;          /* Ширина горизонтальной линии */
+    height: 1px;          /* Толщина линии */
+    margin: 0 auto;
+  }
+
+  /* Отступ для соцсетей снизу */
+  .footer-socials {
+    margin-top: 35px;
+    gap: 24px;
+  }
+
+  .footer-socials a {
+    font-size: 28px;      /* Слегка уменьшаем иконки для мобилок */
+  }
 }
-
 
 @media (max-width: 580px) {
-    .section__10-item {
-        flex-direction: column;
-        align-items: center;
-        gap: 20px;
-        text-align: center;
-    }
+  .section__10-item {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    text-align: center;
+  }
 
-    .section__10-item img {
-        flex: none;
-        width: 100%;
-        max-width: 320px;
-    }
+  .section__10-item img {
+    flex: none;
+    width: 100%;
+    max-width: 320px;
+  }
 
-    .section__10-text {
-        flex: none;
-        width: 100%;
-        max-width: 100%;
-    }
+  .section__10-text {
+    flex: none;
+    width: 100%;
+    max-width: 100%;
+  }
+  .site-lang {
+    font-size: 18px;
+  }
+
+  .site-logo img {
+    width: 100px;
+  }
+
+  .site-header__inner {
+    min-height: 100px;
+  }
 }
+
+@media (max-width: 550px) {
+  .side-menu {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+

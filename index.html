@@ -4,11 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style/fonts.css">
     <link rel="stylesheet" href="style/reset.css">
     <link rel="stylesheet" href="style/style.css">
 </head>
 <body>
+    <div class="site-header" id="siteHeader">
+    <div class="site-header__inner">
+        <button class="burger" id="burgerBtn" type="button" aria-label="Меню">
+            <span></span><span></span><span></span>
+        </button>
+
+        <a href="/" class="site-logo">
+    <img src="img/logo.png" alt="Gabilo" class="logo-white">
+    <img src="img/logo-b.png" alt="Gabilo" class="logo-black">
+</a>
+
+        <div class="site-lang">
+            <a href="#">ENG</a>/<a href="#">DE</a>
+        </div>
+    </div>
+</div>
+
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<aside class="side-menu" id="sideMenu">
+   <button class="side-menu__close" id="menuClose" type="button" aria-label="Закрыть"></button>
+
+    <div class="side-menu__tabs">
+        <button type="button" class="active" data-tab="catalog">Каталог</button>
+        <button type="button" data-tab="info">Информация</button>
+    </div>
+
+    <ul class="side-menu__list active" id="tab-catalog">
+        <li><a href="#">Новинки</a></li>
+        <li><a href="#">На заказ</a></li>
+        <li><a href="#" class="has-arrow">Серьги</a></li>
+        <li><a href="#" class="has-arrow">Кольца</a></li>
+        <li><a href="#" class="has-arrow">Кулоны</a></li>
+        <li><a href="#">Архив</a></li>
+    </ul>
+
+    <ul class="side-menu__list" id="tab-info">
+        <li><a href="#">О Gabilo</a></li>
+        <li><a href="#">Контакты</a></li>
+        <li><a href="#">Коллекции</a></li>
+    </ul>
+</aside>
     <header class="header">
         <div class="header_main">
             <p class="header_subtitle">Брошь</p>
@@ -153,5 +196,44 @@
                 <img src="img/usor-18.jpg" alt="">
             </section>
     </main>
+
+   <footer class="footer">
+  <div class="footer-container">
+    
+    <!-- Колонка 1: Наши сайты -->
+    <div class="footer-col">
+      <h4 class="footer-title">наши сайты</h4>
+      <div class="footer-content">
+        <a href="#" target="_blank" rel="noopener">shop.gabilo.com</a>
+        <a href="#" target="_blank" rel="noopener">archive.gabilo.com</a>
+      </div>
+    </div>
+
+    <div class="footer-divider"></div>
+
+    <!-- Колонка 2: Контакты -->
+    <div class="footer-col">
+      <h4 class="footer-title">контакты</h4>
+      <div class="footer-content">
+        <a href="mailto:gabilo@gabilo.com">gabilo@gabilo.com</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Соцсети снизу по центру (ваши иконки) -->
+  <div class="footer-socials">
+    <a href="#" aria-label="Facebook" target="_blank" rel="noopener">
+      <i class="fab fa-facebook"></i>
+    </a>
+    <a href="#" aria-label="Instagram" target="_blank" rel="noopener">
+      <i class="fab fa-instagram"></i>
+    </a>
+    <a href="#" aria-label="Pinterest" target="_blank" rel="noopener">
+      <i class="fab fa-pinterest"></i>
+    </a>
+  </div>
+</footer>
+    <script src="js/scripts.js" defer></script>
 </body>
 </html>
